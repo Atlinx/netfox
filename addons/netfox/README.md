@@ -31,6 +31,7 @@ netfox is under the [MIT license](LICENSE).
 
 In case of any issues, comments, or questions, please feel free to [open an issue]!
 
+[netfox-boost]: https://github.com/Atlinx/netfox-boost
 [netfox]: https://github.com/foxssake/netfox
 [source]: https://github.com/foxssake/netfox/archive/refs/heads/main.zip
 [Godot engine]: https://godotengine.org/

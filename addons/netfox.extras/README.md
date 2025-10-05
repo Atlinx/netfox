@@ -2,6 +2,11 @@
 
 High-level, game-specific extras for [netfox]!
 
+> [!Important] 🦊⚡ netfox boost
+> This is the [netfox-boost] version of the [netfox] addon, which uses a GDExtesnion 
+> to speed up performance. The API should be identicaly to netfox, and should be 
+> a drop-in replacement.
+
 ## Features
 
 * 🔫 Networked weapons
