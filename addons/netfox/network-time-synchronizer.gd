@@ -143,7 +143,7 @@ func start() -> void:
 	if not multiplayer.is_server():
 		_active = true
 		_sample_idx = 0
-		_sample_buffer = _RingBuffer.new(sync_samples)
+		_sample_buffer = _RingBuffer.new_(sync_samples)
 		
 		_request_timestamp.rpc_id(1)
 
