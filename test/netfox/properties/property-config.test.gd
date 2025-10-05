@@ -34,7 +34,7 @@ func suite():
 
 	test("should get remote owned properties after ownership change", func():
 		var properties := SnapshotFixtures.state_properties()
-		var cache := PropertyCache.new(remote_node)
+		var cache := PropertyCache.new_(remote_node)
 		var config := _PropertyConfig.new()
 		config.set_properties_from_paths(SnapshotFixtures.state_properties(), cache)
 		config.local_peer_id = LOCAL_PEER

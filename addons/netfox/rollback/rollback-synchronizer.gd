@@ -77,7 +77,7 @@ var _skipset: _Set = _Set.new()
 
 var _properties_dirty: bool = false
 
-var _property_cache := PropertyCache.new(root)
+var _property_cache := PropertyCache.new_(root)
 var _freshness_store := RollbackFreshnessStore.new()
 
 var _states := _PropertyHistoryBuffer.new()
@@ -350,7 +350,7 @@ func _notify_resim() -> void:
 		NetworkRollback.notify_resimulation_start(_history_transmitter.get_latest_state_tick())
 
 func _prepare_tick_process(tick: int) -> void:
-	_history_recorder.set_latest_state_tick(_history_transmitter._latest_state_tick)
+	_history_recorder.set_latest_state_tick(_history_transmitter.get_latest_state_tick())
 
 	# Save data for input prediction
 	var retrieved_tick := _inputs.get_closest_tick(tick)

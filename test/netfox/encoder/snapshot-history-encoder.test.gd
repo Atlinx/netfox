@@ -18,10 +18,10 @@ func before_case(__):
 
 	source_history = _PropertyHistoryBuffer.new()
 	target_history = _PropertyHistoryBuffer.new()
-	property_cache = PropertyCache.new(root_node)
+	property_cache = PropertyCache.new_(root_node)
 
-	source_encoder = _SnapshotHistoryEncoder.new(source_history, property_cache)
-	target_encoder = _SnapshotHistoryEncoder.new(target_history, property_cache)
+	source_encoder = _SnapshotHistoryEncoder.new_(source_history, property_cache)
+	target_encoder = _SnapshotHistoryEncoder.new_(target_history, property_cache)
 
 	source_encoder.set_properties(property_entries)
 	target_encoder.set_properties(property_entries)

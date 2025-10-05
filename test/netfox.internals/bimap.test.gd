@@ -33,7 +33,7 @@ func suite():
 		bimap.put(1, "foo")
 		bimap.put(2, "bar")
 
-		expect_equal(bimap.get_by_value("quix"), null)
+		expect_equal(bimap.get_by_key("quix"), null)
 	)
 
 	test("should rewrite on known key", func():

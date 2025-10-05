@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dx5444o2ipacp"]
+
+[ext_resource type="Script" uid="uid://dga7yb78h85wd" path="res://_test/test.gd" id="1_jbgly"]
+
+[node name="Test" type="Node" node_paths=PackedStringArray("cpp_test")]
+script = ExtResource("1_jbgly")
+cpp_test = NodePath("CPPTest")
+
+[node name="CPPTest" type="CPPTest" parent="."]
+
+[node name="PeerVisibilityFilter" type="PeerVisibilityFilter" parent="."]

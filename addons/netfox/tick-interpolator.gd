@@ -38,7 +38,7 @@ var _property_cache: PropertyCache
 ## [br][br]
 ## Call this after any change to configuration.
 func process_settings():
-	_property_cache = PropertyCache.new(root)
+	_property_cache = PropertyCache.new_(root)
 	_property_entries.clear()
 	_interpolators.clear()
 

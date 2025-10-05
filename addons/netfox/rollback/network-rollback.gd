@@ -267,7 +267,7 @@ func is_just_mutated(target: Object, p_tick: int = tick) -> bool:
 		return false
 
 func _ready():
-	_NetfoxLogger.register_tag(_get_rollback_tag)
+	_NetfoxLogger.register_tag(_get_rollback_tag, 0)
 	NetworkTime.after_tick_loop.connect(_rollback)
 
 func _exit_tree():

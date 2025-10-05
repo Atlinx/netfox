@@ -1,11 +1,11 @@
 extends RefCounted
-class_name _Set
+class_name Set
 
 var _data: Dictionary = {}
 var _iterator_idx: int = -1
 
-static func of(items: Array) -> _Set:
-	var result := _Set.new()
+static func of(items: Array) -> Set:
+	var result := Set.new()
 	for item in items:
 		result.add(item)
 	return result
@@ -38,7 +38,7 @@ func max():
 	return _data.keys().max()
 
 func equals(other) -> bool:
-	if not other or not other is _Set:
+	if not other or not other is Set:
 		return false
 
 	return values() == other.values()

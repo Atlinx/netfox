@@ -68,11 +68,11 @@ static var _logger := _NetfoxLogger.for_netfox("StateSynchronizer")
 ## [br][br]
 ## Call this after any change to configuration.
 func process_settings() -> void:
-	_property_cache = PropertyCache.new(root)
+	_property_cache = PropertyCache.new_(root)
 	_property_config.set_properties_from_paths(properties, _property_cache)
 
-	_full_state_encoder = _SnapshotHistoryEncoder.new(_state_history, _property_cache)
-	_diff_state_encoder = _DiffHistoryEncoder.new(_state_history, _property_cache)
+	_full_state_encoder = _SnapshotHistoryEncoder.new_(_state_history, _property_cache)
+	_diff_state_encoder = _DiffHistoryEncoder.new_(_state_history, _property_cache)
 
 	_diff_state_encoder.add_properties(_property_config.get_properties())
 
