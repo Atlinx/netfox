@@ -28,3 +28,26 @@ plantuml-*.jar
 
 # Only for local use
 sh/ensure-uids.sh
+
+# Binaries
+*.o
+*.os
+*.so
+*.obj
+*.bc
+*.pyc
+*.dblite
+*.pdb
+*.lib
+*.config
+*.creator
+*.creator.user
+*.files
+*.includes
+*.idb
+*.exp
+*.dll
+
+# GDExtension
+addons/netfox/bin/*
+!addons/netfox/bin/*.gdextension
