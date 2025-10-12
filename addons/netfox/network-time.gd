@@ -86,6 +86,13 @@ var tick: int:
 	set(v):
 		push_error("Trying to set read-only variable tick")
 
+## The current stage of the ticking process
+var tick_stage: TickStage:
+	get:
+		return _tick_stage
+	set(v):
+		push_error("Trying to set read-only variable tick_stage")
+
 ## Threshold before recalibrating [member tick] and [member time].
 ##
 ## Time is continuously synced to the server. In case the time difference is 
@@ -338,6 +345,12 @@ signal on_tick(delta: float, tick: int)
 ## Emitted after every network tick.
 signal after_tick(delta: float, tick: int)
 
+## Emitted after after_tick, meant to load states into the game. Connects to StateSynchronizers
+signal sync_tick(delta: float, tick: int)
+
+## Emitted after sync_tick, meant to run a physics loop. Connects to PhysicsDriver.
+signal physics_tick(delta: float, tick: int)
+
 ## Emitted after the tick loop is run.
 signal after_tick_loop()
 
@@ -364,6 +377,17 @@ const _STATE_INACTIVE := 0
 const _STATE_SYNCING := 1
 const _STATE_ACTIVE := 2
 
+enum TickStage {
+	NONE,
+	BEFORE_TICK_LOOP,
+	BEFORE_TICK,
+	ON_TICK,
+	AFTER_TICK,
+	SYNC_TICK,
+	PHYSICS_TICK,
+	AFTER_TICK_LOOP
+}
+
 # Settings
 var _tickrate: int = ProjectSettings.get_setting(&"netfox/time/tickrate", 30)
 var _sync_to_physics: bool = ProjectSettings.get_setting(&"netfox/time/sync_to_physics", false)
@@ -377,6 +401,7 @@ var _state: int = _STATE_INACTIVE
 
 # Timing
 var _tick: int = 0
+var _tick_stage: TickStage = TickStage.NONE
 var _was_paused: bool = false
 var _initial_sync_done = false
 var _process_delta: float = 0
@@ -465,10 +490,11 @@ func start() -> int:
 ## This will stop the time sync in the background, and no more ticks will be 
 ## emitted until the next start.
 func stop() -> void:
-	NetworkTimeSynchronizer.stop()
-	_tickrate_handshake.stop()
-	_state = _STATE_INACTIVE
-	_synced_peers.clear()
+	if _is_active():
+		NetworkTimeSynchronizer.stop()
+		_tickrate_handshake.stop()
+		_state = _STATE_INACTIVE
+		_synced_peers.clear()
 
 ## Check if the initial time sync is done.
 func is_initial_sync_done() -> bool:
@@ -553,18 +579,29 @@ func _loop() -> void:
 	_last_process_time = _clock.get_time()
 	while _next_tick_time < _last_process_time and ticks_in_loop < max_ticks_per_frame:
 		if ticks_in_loop == 0:
+			_tick_stage = TickStage.BEFORE_TICK_LOOP
 			before_tick_loop.emit()
 
+		_tick_stage = TickStage.BEFORE_TICK
 		before_tick.emit(ticktime, tick)
+		_tick_stage = TickStage.ON_TICK
 		on_tick.emit(ticktime, tick)
+		_tick_stage = TickStage.AFTER_TICK
 		after_tick.emit(ticktime, tick)
+		_tick_stage = TickStage.SYNC_TICK
+		sync_tick.emit(ticktime, tick)
+		_tick_stage = TickStage.PHYSICS_TICK
+		physics_tick.emit(ticktime, tick)
 		
 		_tick += 1
 		ticks_in_loop += 1
 		_next_tick_time += ticktime
 	
 	if ticks_in_loop > 0:
+		_tick_stage = TickStage.AFTER_TICK_LOOP
 		after_tick_loop.emit()
+	
+	_tick_stage = TickStage.NONE
 
 func _process(delta: float) -> void:
 	_process_delta = delta

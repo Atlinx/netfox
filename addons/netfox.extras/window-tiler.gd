@@ -61,7 +61,7 @@ func _ready() -> void:
 	var tile_count = locks.size()
 	var idx = locks.find(_uid)
 
-	_logger.debug("Tiling as idx %d / %d - %s in %s" % [idx, tile_count, _uid, locks])
+	_logger.debug("Tiling as idx %d / %d - %s in %s", [idx, tile_count, _uid, locks])
 	_tile_window(idx, tile_count)
 
 func _is_embedded() -> bool:

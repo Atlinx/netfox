@@ -5,11 +5,40 @@ class_name NetworkRigidBody3D
 ## A rollback / state synchronizer class for RigidBody3D.
 ## Set state property path to physics_state to synchronize the state of this body.
 
+
+signal on_physics_tick(delta: float, tick: int)
 @onready var direct_state = PhysicsServer3D.body_get_direct_state(get_rid())
 
-var physics_state: Array:
-	get: return get_state()
-	set(v): set_state(v)
+var physics_state: Array :
+	get: 
+		return get_state()
+	set(v):
+		set_state(v)
+var physics_state_origin: Vector3 :
+	get: 
+		return direct_state.transform.origin
+	set(v): 
+		direct_state.transform.origin = v
+var physics_state_transform: Transform3D :
+	get: 
+		return direct_state.transform
+	set(v): 
+		direct_state.transform = v
+var physics_state_linear_velocity: Vector3 :
+	get: 
+		return direct_state.linear_velocity
+	set(v): 
+		direct_state.linear_velocity = v
+var physics_state_angular_velocity: Vector3 :
+	get: 
+		return direct_state.angular_velocity
+	set(v): 
+		direct_state.angular_velocity = v
+var physics_state_sleeping: bool :
+	get: 
+		return direct_state.sleeping
+	set(v): 
+		direct_state.sleeping = v
 
 enum {
 	ORIGIN,
@@ -42,5 +71,5 @@ func set_state(remote_state: Array) -> void:
 
 ## Override and apply any logic, forces or impulses to the rigid body as you would in physics_process
 ## The physics engine will run its simulation during rollback_tick with other nodes
-func _physics_rollback_tick(_delta, _tick):
-	pass
+func _physics_tick(_delta: float, _tick: int):
+	on_physics_tick.emit(_delta, _tick)
